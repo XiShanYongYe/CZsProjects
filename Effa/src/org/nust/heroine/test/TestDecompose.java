@@ -15,8 +15,6 @@ import org.nust.heroine.util.Decompose;
 import org.nust.heroine.util.PnmlParser;
 import org.nust.heroine.view.PetriNetFrame;
 
-import sun.net.www.content.image.png;
-
 public class TestDecompose extends JFrame{
 	/**
 	 * 

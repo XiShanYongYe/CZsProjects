@@ -436,12 +436,17 @@ public class Recovery {
 	 * @return
 	 */
 	public int domi(HashMap<String, Integer> ef, PetriNet pn, int level) {
-		// System.out.println("test");
-		// System.out.println("ef"+ef);
-		// System.out.println("---------");
-		int numCounter[] = new int[40];
+
+		/**
+		 * 修改： 修改人：常震 修改时间：2017.11.27
+		 */
+		// ///////////////////////////////////
+		Map<String, Integer> map1 = new HashMap<>();// 计算每个event的次数
+		Map<Integer, Integer> map2 = new HashMap<>();// 根据event的次数计算mode
+		// int numCounter[] = new int[40];
+		// ///////////////////////////////////
 		Integer num = null;
-		int times = 0;
+		// int times = 0;
 		int dominate = 0;
 		if (level == 0) {
 			if (pn.isHasIntersection) {
@@ -449,45 +454,99 @@ public class Recovery {
 					if ((num = ef.get(node.getID())) != null
 							&& pn.f1.get(1).contains(
 									pn.getTransMap().get(node.getID())) == false) {
-						numCounter[num]++;
+						/**
+						 * 修改： 修改人：常震 修改时间：2017.11.27
+						 */
+						// ///////////////////////////////////
+						// numCounter[num]++;
+						if (!map1.containsKey(node.getID()))
+							map1.put(node.getID(), num);
+						// ///////////////////////////////////
 					}
 				}
 			} else {
 				for (Node node : pn.f1.get(0)) {
 					if ((num = ef.get(node.getID())) != null) {
-						numCounter[num]++;
-						// }else{
-						// numCounter[0]++;
+						/**
+						 * 修改： 修改人：常震 修改时间：2017.11.27
+						 */
+						// ///////////////////////////////////
+						// numCounter[num]++;
+						if (!map1.containsKey(node.getID()))
+							map1.put(node.getID(), num);
+						// ///////////////////////////////////
 					}
 				}
 			}
 			for (Node node : pn.f2.get(0)) {
 				if ((num = ef.get(node.getID())) != null) {
-					numCounter[num + 1]++;
-					// }else{
-					// numCounter[1]++;
+					/**
+					 * 修改： 修改人：常震 修改时间：2017.11.27
+					 */
+					// ///////////////////////////////////
+					// numCounter[num + 1]++;
+					if (!map1.containsKey(node.getID()))
+						map1.put(node.getID(), num + 1);
+					// ///////////////////////////////////
 				}
 			}
 
 		} else if (level == 1) {
 			for (Node node : pn.f1.get(1)) {
 				if ((num = ef.get(node.getID())) != null) {
-					numCounter[num]++;
+					/**
+					 * 修改： 修改人：常震 修改时间：2017.11.27
+					 */
+					// ///////////////////////////////////
+					// numCounter[num]++;
+					if (!map1.containsKey(node.getID()))
+						map1.put(node.getID(), num);
+					// ///////////////////////////////////
 				}
 			}
 			for (Node node : pn.f2.get(1)) {
 				if ((num = ef.get(node.getID())) != null) {
-					numCounter[num + 1]++;
+					/**
+					 * 修改： 修改人：常震 修改时间：2017.11.27
+					 */
+					// ///////////////////////////////////
+					// numCounter[num + 1]++;
+					if (!map1.containsKey(node.getID()))
+						map1.put(node.getID(), num + 1);
+					// ///////////////////////////////////
 				}
 			}
 		}
 
-		for (int i = 0; i < 30; i++) {
-			if (times < numCounter[i]) {
-				times = numCounter[i];
-				dominate = i;
+		/**
+		 * 修改： 修改人：常震 修改时间：2017.11.27
+		 */
+		// ///////////////////////////////////
+		// for (int i = 0; i < 30; i++) {
+		// if (times < numCounter[i]) {
+		// times = numCounter[i];
+		// dominate = i;
+		// }
+		// }
+
+		for (String string : map1.keySet()) {
+			int value = map1.get(string);
+			if (!map2.containsKey(value))
+				map2.put(value, 1);
+			else
+				map2.put(value, map2.get(value) + 1);
+		}
+
+		int keyMax = 0;
+		int valueMax = 0;
+		for (Integer i : map2.keySet()) {
+			if (map2.get(i) > valueMax) {
+				valueMax = map2.get(i);
+				keyMax = i;
 			}
 		}
+		dominate = keyMax;
+		// ///////////////////////////////////
 		return dominate;
 	}
 

@@ -229,9 +229,9 @@ public class MainFrame extends JFrame implements ActionListener {
 				right++;
 			}
 		}
-		System.out.println("right = " + right + "     all = " + cTraces.size());
+		System.out.println("right = " + right + "     all = " + dTraces.size());
 		DecimalFormat format = new DecimalFormat("#0.0000");
-		rate = right * 1.0 / cTraces.size();
+		rate = right * 1.0 / dTraces.size();
 		System.out.println("正确率:" + format.format(rate));
 
 	}
