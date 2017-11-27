@@ -63,8 +63,8 @@ public class Algorithm1 {
 	@SuppressWarnings("unchecked")
 	public List<Trace> repair(Trace dtrace) {
 
-		System.out
-				.println("-----------------------------偏差日志进入修复-----------------------------");
+		// System.out
+		// .println("-----------------------------偏差日志进入修复-----------------------------");
 		List<Trace> repairedtraces = new ArrayList<>();
 		Trace repaired;
 

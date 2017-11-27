@@ -547,9 +547,9 @@ public class TraceUtils {
 	 * @return int max
 	 */
 	public static int mode(Trace t, Loop loop) {
-		System.out
-				.println("-----------------------------------------------------");
-		System.out.println(t);
+		// System.out
+		// .println("-----------------------------------------------------");
+		// System.out.println(t);
 		// 这里确定了循环的次数---------
 		Map<String, Integer> map1 = new HashMap<>();// 计算每个event的次数
 		Map<Integer, Integer> map2 = new HashMap<>();// 根据event的次数计算mode
@@ -564,8 +564,8 @@ public class TraceUtils {
 		Set<String> tn1 = loop.getN1();
 		Set<String> tn2 = loop.getN2();
 
-		System.out.println("tn1 = " + tn1);
-		System.out.println("tn2 = " + tn2);
+		// System.out.println("tn1 = " + tn1);
+		// System.out.println("tn2 = " + tn2);
 
 		// map2.put(0, 0);
 		// map2.put(1, 0);
@@ -616,7 +616,7 @@ public class TraceUtils {
 		/*
 		 * System.out.println("循环的次数："+max); return max;
 		 */
-		System.out.println("循环的次数：" + keyMax);
+		// System.out.println("循环的次数：" + keyMax);
 		return keyMax;
 	}
 
