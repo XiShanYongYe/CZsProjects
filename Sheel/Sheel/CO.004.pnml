@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>CO.004.xml</text>
+    </name>
+    <page id="n0">
+      <place id="pend">
+        <name>
+          <text>pend</text>
+        </name>
+        <graphics>
+          <position x="975.0" y="165.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+      </place>
+      <place id="place_0">
+        <name>
+          <text>place_0</text>
+        </name>
+        <graphics>
+          <position x="420.0" y="165.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+      </place>
+      <place id="place_1">
+        <name>
+          <text>place_1</text>
+        </name>
+        <graphics>
+          <position x="225.0" y="165.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+      </place>
+      <place id="place_4">
+        <name>
+          <text>place_4</text>
+        </name>
+        <graphics>
+          <position x="585.0" y="165.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+      </place>
+      <place id="place_5">
+        <name>
+          <text>place_5</text>
+        </name>
+        <graphics>
+          <position x="810.0" y="165.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+      </place>
+      <place id="pstart">
+        <name>
+          <text>pstart</text>
+        </name>
+        <graphics>
+          <position x="90.0" y="165.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <transition id="trans_0">
+        <name>
+          <text>trans_0</text>
+        </name>
+        <graphics>
+          <position x="165.0" y="165.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+        <fill color="#FFFFFF"/>
+      </transition>
+      <transition id="trans_1">
+        <name>
+          <text>trans_1</text>
+        </name>
+        <graphics>
+          <position x="885.0" y="165.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+        <fill color="#FFFFFF"/>
+      </transition>
+      <transition id="trans_2">
+        <name>
+          <text>trans_2</text>
+        </name>
+        <graphics>
+          <position x="525.0" y="270.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+        <fill color="#FFFFFF"/>
+      </transition>
+      <transition id="trans_3">
+        <name>
+          <text>trans_3</text>
+        </name>
+        <graphics>
+          <position x="405.0" y="105.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+        <fill color="#FFFFFF"/>
+      </transition>
+      <transition id="trans_4">
+        <name>
+          <text>trans_4</text>
+        </name>
+        <graphics>
+          <position x="495.0" y="165.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+        <fill color="#FFFFFF"/>
+      </transition>
+      <transition id="trans_5">
+        <name>
+          <text>trans_5</text>
+        </name>
+        <graphics>
+          <position x="675.0" y="165.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+        <fill color="#FFFFFF"/>
+      </transition>
+      <transition id="trans_6">
+        <name>
+          <text>trans_6</text>
+        </name>
+        <graphics>
+          <position x="330.0" y="165.0"/>
+          <dimension x="25" y="25"/>
+        </graphics>
+        <fill color="#FFFFFF"/>
+      </transition>
+      <arc id="arc_0" source="place_4" target="trans_3">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_1" source="trans_2" target="place_1">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_10" source="trans_3" target="place_1">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_11" source="place_0" target="trans_4">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_12" source="trans_0" target="place_1">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_13" source="place_5" target="trans_2">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_2" source="pstart" target="trans_0">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_3" source="place_5" target="trans_1">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_4" source="place_4" target="trans_5">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_5" source="trans_6" target="place_0">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_6" source="place_1" target="trans_6">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_7" source="trans_1" target="pend">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_8" source="trans_5" target="place_5">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="arc_9" source="trans_4" target="place_4">
+        <name>
+          <text>1</text>
+        </name>
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+    </page>
+  </net>
+</pnml>
