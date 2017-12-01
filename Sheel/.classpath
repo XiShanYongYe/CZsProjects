@@ -10,6 +10,6 @@
 	<classpathentry kind="lib" path="lib/commons-collections4-4.1.jar"/>
 	<classpathentry kind="lib" path="lib/Log.jar"/>
 	<classpathentry kind="lib" path="lib/OpenXES.jar"/>
-	<classpathentry kind="lib" path="D:/Eclipse/adt_eclipse/adt-eclipse/eclipse/plugins/org.junit_4.10.0.v4_10_0_v20120426-0900/junit.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

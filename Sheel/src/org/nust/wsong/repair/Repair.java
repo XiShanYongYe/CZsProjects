@@ -32,9 +32,21 @@ public class Repair {
 	public static Trace repair(Trace trace, Graph g) {
 
 		/**
+		 * 修改： 修改人：常震 修改时间：2017.11.29
+		 */
+		// //////////////////////////////////////////////////////////////////////
+		Trace newtrace = new Trace();// 新建一个trace的克隆，为了之后的操作不影响原操作
+
+		ArrayList<String> currentEvents = new ArrayList<>();
+		for (String string : trace.getEvents())
+			currentEvents.add(string);
+		newtrace.setEvents(currentEvents);
+		// //////////////////////////////////////////////////////////////////////
+
+		/**
 		 * 修改： 修改人：常震 修改时间：2017.11.27
 		 */
-		// ///////////////////////////////////
+		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		HashMap<String, Integer> exists = new HashMap<String, Integer>();// 记录trace中各个事件出现的次数
 		List<String> traceEvents = trace.getEvents();
 		for (String event : traceEvents) {
@@ -46,8 +58,7 @@ public class Repair {
 
 		String boundary = null;
 		for (int i = trace.size() - 1; i >= 0; i--) {
-			if (g.getNodeByLabel(trace.get(i)) != null
-					&& g.getNodeByLabel(trace.get(i)).size() > 1) {
+			if (g.getNodeByLabel(trace.get(i)) != null && g.getNodeByLabel(trace.get(i)).size() > 1) {
 				boundary = trace.get(i);
 				break;
 			}
@@ -59,7 +70,7 @@ public class Repair {
 				segments.add(i);
 		}
 		segments.add(traceEvents.size() - 1);
-		// ///////////////////////////////////
+		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// 入度为0的顶点
 		List<Node> zeroList = new ArrayList<>();
@@ -75,8 +86,10 @@ public class Repair {
 
 			boolean flag = false;// 能够重现
 
-			if (i < trace.size()) {
-				s = trace.get(i);
+			if (i < newtrace.size()) {
+				s = newtrace.get(i);
+				// if (i < trace.size()) {
+				// s = trace.get(i);
 				// dita[i]不属于V，冗余元素
 				if (g.getNodeByLabel(s) == null) {
 					i++;
@@ -89,9 +102,9 @@ public class Repair {
 						/**
 						 * 修改： 修改人：常震 修改时间：2017.11.27
 						 */
-						// ///////////////////////////////////
+						// /////////////////////////////////////////////////////////////////////////////////////////////////////////
 						exists.put(s, exists.get(s) - 1);
-						// ///////////////////////////////////
+						// /////////////////////////////////////////////////////////////////////////////////////////////////////////
 						g.removeNode(node);
 						zeroList.remove(node);
 						for (Edge e : g.getOutEdges(node)) {
@@ -110,9 +123,9 @@ public class Repair {
 			}
 
 			/**
-			 * 修改： 修改人：常震 修改时间：2017.11.27
+			 * 修改： 修改人：常震 修改时间：2017.11.27 去掉冗余
 			 */
-			// ///////////////////////////////////
+			// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if (boundary != null && exists.get(s) > g.getNodeByLabel(s).size()) {
 				int current = 0;
 				for (int m = 0; m < segments.size(); m++) {
@@ -134,12 +147,13 @@ public class Repair {
 					continue;
 				}
 			}
-			// ///////////////////////////////////
+			// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			// 任找一个不属于Ts的能够重现的重现
 			for (Node node : zeroList) {
-				if (!trace.getEvents().subList(i, trace.getEvents().size())
-						.contains(node.getLabel())) {
+				if (!newtrace.getEvents().subList(i, newtrace.getEvents().size()).contains(node.getLabel())) {
+					// if (!trace.getEvents().subList(i,
+					// trace.getEvents().size()).contains(node.getLabel())) {
 					flag = true;
 					repairedTrace.append(node.getLabel());
 					g.removeNode(node);
@@ -158,8 +172,10 @@ public class Repair {
 			}
 
 			// 往后找一个能重现的
-			for (int j = i + 1; j < trace.size(); j++) {
-				String sj = trace.get(j);
+			for (int j = i + 1; j < newtrace.size(); j++) {
+				String sj = newtrace.get(j);
+				// for (int j = i + 1; j < trace.size(); j++) {
+				// String sj = trace.get(j);
 				if (null == g.getNodeByLabel(sj))
 					continue;
 				if (flag) {
@@ -169,12 +185,6 @@ public class Repair {
 					if (zeroList.contains(node)) {
 						flag = true;
 						repairedTrace.append(sj);
-						/**
-						 * 修改： 修改人：常震 修改时间：2017.11.27
-						 */
-						// ///////////////////////////////////
-						exists.put(s, exists.get(s) - 1);
-						// ///////////////////////////////////
 						g.removeNode(node);
 						zeroList.remove(node);
 						for (Edge e : g.getOutEdges(node)) {
@@ -183,6 +193,14 @@ public class Repair {
 								zeroList.add(e.getTarget());
 							}
 						}
+						/**
+						 * 修改： 修改人：常震 修改时间：2017.11.29
+						 */
+						// //////////////////////////////////////////////////////////////////////
+						if (exists.get(sj) != null && exists.get(sj) <= g.getNodeByLabel(sj).size()) {// 这样的情况认定为缺失
+						} else// 在trace中去掉乱序掉的事件
+							newtrace.getEvents().remove(j);
+						// //////////////////////////////////////////////////////////////////////
 						break;
 					}
 				}
@@ -201,8 +219,7 @@ public class Repair {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static Trace repair2(Trace t, List<Set<Trace>> clusters,
-			Set<Loop> loops) {
+	public static Trace repair2(Trace t, List<Set<Trace>> clusters, Set<Loop> loops) {
 		// long start = System.nanoTime();
 		List<Graph> graphs = new ArrayList<>();
 		for (Set<Trace> c : clusters) {
@@ -328,19 +345,16 @@ public class Repair {
 	 * @param clusters
 	 * @return
 	 */
-	public static List<List<Trace>> heuristics1(Trace t,
-			List<List<Trace>> clusters) {
+	public static List<List<Trace>> heuristics1(Trace t, List<List<Trace>> clusters) {
 		double d = Double.MIN_VALUE;
 		// List<Trace> maxCluster = clusters.get(0);
 
 		Map<Double, List<List<Trace>>> maxClusters = new HashMap<Double, List<List<Trace>>>();
 		for (List<Trace> cluster : clusters) {
 			// 交集
-			Set<String> intersection = MyCollectionsUtils.intersection(
-					t.getEvents(), cluster.get(0).getEvents());
+			Set<String> intersection = MyCollectionsUtils.intersection(t.getEvents(), cluster.get(0).getEvents());
 			// 并集
-			Set<String> union = MyCollectionsUtils.union(t.getEvents(), cluster
-					.get(0).getEvents());
+			Set<String> union = MyCollectionsUtils.union(t.getEvents(), cluster.get(0).getEvents());
 			double value = intersection.size() * 1.0 / union.size();
 			/*
 			 * System.out.println(

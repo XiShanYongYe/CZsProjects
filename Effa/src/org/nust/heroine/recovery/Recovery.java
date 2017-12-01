@@ -86,12 +86,10 @@ public class Recovery {
 			if (subResulTraces.size() == 1) {
 				results.add(subResulTraces.get(0));
 			} else {
-				int minEditDistance = StringDistance.editDistance(
-						subResulTraces.get(0).getEvents(), trace.getEvents());
+				int minEditDistance = StringDistance.editDistance(subResulTraces.get(0).getEvents(), trace.getEvents());
 				Trace minTrace = subResulTraces.get(0);
 				for (int j = 1; j < subResulTraces.size(); j++) {
-					int compareEditDistance = StringDistance.editDistance(
-							subResulTraces.get(j).getEvents(),
+					int compareEditDistance = StringDistance.editDistance(subResulTraces.get(j).getEvents(),
 							trace.getEvents());
 					if (compareEditDistance < minEditDistance) {
 						minEditDistance = compareEditDistance;
@@ -172,6 +170,14 @@ public class Recovery {
 	 * @return
 	 */
 	public Trace sr_plus(Trace trace, PetriNet pn) {
+
+		/**
+		 * 修改： 修改人：常震 修改时间：2017.11.29
+		 */
+		// //////////////////////////////////////////////////////////////////////
+		Trace newtrace = new Trace();// 新建一个trace的克隆，为了之后的操作不影响原操作
+		// //////////////////////////////////////////////////////////////////////
+
 		HashMap<String, Integer> ft = new HashMap<String, Integer>();// 记录已修复部分的trace中事件出现的次数
 		Trace rTrace = new Trace();// 修复trace
 		int i = 0;
@@ -182,7 +188,12 @@ public class Recovery {
 		/**
 		 * 修改： 修改人：常震 修改时间：2017.11.14
 		 */
-		// ///////////////////////////////////
+		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		ArrayList<String> currentEvents = new ArrayList<>();
+		for (String string : trace.getEvents())
+			currentEvents.add(string);
+		newtrace.setEvents(currentEvents);
+
 		HashMap<String, Integer> exists = new HashMap<String, Integer>();// 记录trace中各个事件出现的次数
 		List<String> traceEvents = trace.getEvents();
 		for (String event : traceEvents) {
@@ -197,17 +208,17 @@ public class Recovery {
 				segments.add(i);
 		}
 		segments.add(traceEvents.size() - 1);
-		// ///////////////////////////////////
+		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		i = 0;
 		String pre = boundary;
 		while (pn.getSinkPlace().gettoken() <= 0) {
-			if (i < trace.getEvents().size()) {
-				String s = trace.getEvents().get(i);
+			if (i < newtrace.getEvents().size()) {
+				String s = newtrace.getEvents().get(i);
 				if (pn.isHasIntersection) {
 					if (pre == boundary) {
 						HashMap<String, Integer> temp = new HashMap<String, Integer>();
-						for (int j = i; j < trace.getEvents().size(); j++) {
-							String s1 = trace.getEvents().get(j);
+						for (int j = i; j < newtrace.getEvents().size(); j++) {
+							String s1 = newtrace.getEvents().get(j);
 							Integer integer = temp.get(s1);
 							if (integer == null)
 								temp.put(s1, 1);
@@ -245,7 +256,7 @@ public class Recovery {
 				/**
 				 * 修改： 修改人：常震 修改时间：2017.11.14
 				 */
-				// ///////////////////////////////////
+				// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				if (exists.get(s) > quot.get(s)) {
 					int current = 0;
 					for (int m = 0; m < segments.size(); m++) {
@@ -258,8 +269,7 @@ public class Recovery {
 					if (current == 0)
 						sublist = traceEvents.subList(0, i);
 					else {
-						sublist = traceEvents.subList(
-								segments.get(current - 1), i);
+						sublist = traceEvents.subList(segments.get(current - 1), i);
 					}
 					int before = sublist.lastIndexOf(s);
 					if (before != -1) {
@@ -268,12 +278,8 @@ public class Recovery {
 						continue;
 					}
 				}
-				// ///////////////////////////////////
-				// if (pre != null && pre.equals(s)) {
-				// i++;
-				// continue;
-				// }
-				// ///////////////////////////////////
+				// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 				if (pn.getTransMap().get(s) == null) {
 					i++;
 					continue;
@@ -299,27 +305,74 @@ public class Recovery {
 						enabled = node;
 						i++;
 					}
-				} else if (enableTransition(trace, pn, i, k) < 0) {
-					if ((boe = backorexit(pn)) >= 0) {
-						Node tb = pn.backs.get(boe);
-						if (ft.get(tb.getID()) < quot.get(tb.getID())) {
-							enabled = tb;
-						} else {
-							enabled = pn.getTransMap().get(
-									pn.exits.get(boe).getID());
+				} else {
+					/**
+					 * 修改： 修改人：常震 修改时间：2017.11.29
+					 */
+					// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+					int value = enableTransition(newtrace, pn, i, k);
+					// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+					if (value < 0) {
+						if ((boe = backorexit(pn)) >= 0) {
+							Node tb = pn.backs.get(boe);
+							if (ft.get(tb.getID()) < quot.get(tb.getID())) {
+								enabled = tb;
+							} else {
+								enabled = pn.getTransMap().get(pn.exits.get(boe).getID());
+							}
 						}
-					}
-				} else if (enableTransition(trace, pn, i, k) > 0) {
-					if ((boe = backorexit(pn)) >= 0) {
-						Node tb = pn.backs.get(boe);
-						if (ft.get(tb.getID()) < quot.get(tb.getID())) {
-							enabled = tb;
-						} else {
-							enabled = pn.getTransMap().get(
-									pn.exits.get(boe).getID());
+					} else if (value > 0) {
+						if ((boe = backorexit(pn)) >= 0) {
+							Node tb = pn.backs.get(boe);
+							if (ft.get(tb.getID()) < quot.get(tb.getID())) {
+								enabled = tb;
+							} else {
+								enabled = pn.getTransMap().get(pn.exits.get(boe).getID());
+							}
 						}
+						/**
+						 * 修改： 修改人：常震 修改时间：2017.11.29
+						 */
+						// //////////////////////////////////////////////////////////////////////
+						if (exists.get(enabled.getID()) != null
+								&& exists.get(enabled.getID()) < quot.get(enabled.getID())) {// 这样的情况认定为缺失
+							exists.put(enabled.getID(), exists.get(enabled.getID()) + 1);
+						} else {// 在trace中去掉乱序掉的事件
+							newtrace.getEvents().remove(i + value);
+							k = newtrace.getEvents().size();
+						}
+						// //////////////////////////////////////////////////////////////////////
 					}
 				}
+
+				// } else if (enableTransition(newtrace, pn, i, k) < 0) {
+				// if ((boe = backorexit(pn)) >= 0) {
+				// Node tb = pn.backs.get(boe);
+				// if (ft.get(tb.getID()) < quot.get(tb.getID())) {
+				// enabled = tb;
+				// } else {
+				// enabled = pn.getTransMap().get(pn.exits.get(boe).getID());
+				// }
+				// }
+				// } else if (enableTransition(newtrace, pn, i, k) > 0) {
+				// if ((boe = backorexit(pn)) >= 0) {
+				// Node tb = pn.backs.get(boe);
+				// if (ft.get(tb.getID()) < quot.get(tb.getID())) {
+				// enabled = tb;
+				// } else {
+				// enabled = pn.getTransMap().get(pn.exits.get(boe).getID());
+				// }
+				// }
+				// // * 修改： 修改人：常震 修改时间：2017.11.14
+				// // */
+				// // // ///////////////////////////////////
+				// // // 在trace中去掉乱序掉的事件
+				// newtrace.getEvents().remove(i + enableTransition(newtrace,
+				// pn, i, k));
+				// k = newtrace.getEvents().size();
+				// // // ///////////////////////////////////
+				// }
+
 				ft.put(enabled.getID(), ft.get(enabled.getID()) + 1);
 				rTrace.getEvents().add(enabled.getID());
 				pn.fire(enabled);
@@ -328,8 +381,7 @@ public class Recovery {
 				for (Node transition : pn.getTransitons()) {
 					if (pn.getSinkPlace().gettoken() >= 1)
 						break;
-					if (pn.enabled(transition)
-							&& !pn.backs.contains(transition)) {
+					if (pn.enabled(transition) && !pn.backs.contains(transition)) {
 						pn.fire(transition);
 						rTrace.getEvents().add(transition.getID());
 					}
@@ -421,7 +473,7 @@ public class Recovery {
 			else if (visited.get(s) == false)
 				denominator++;
 		}
-		// System.out.println("result:     "+(numerator*1.0/denominator));
+		// System.out.println("result: "+(numerator*1.0/denominator));
 		return numerator * 1.0 / denominator;
 	}
 
@@ -452,8 +504,7 @@ public class Recovery {
 			if (pn.isHasIntersection) {
 				for (Node node : pn.f1.get(0)) {
 					if ((num = ef.get(node.getID())) != null
-							&& pn.f1.get(1).contains(
-									pn.getTransMap().get(node.getID())) == false) {
+							&& pn.f1.get(1).contains(pn.getTransMap().get(node.getID())) == false) {
 						/**
 						 * 修改： 修改人：常震 修改时间：2017.11.27
 						 */

@@ -24,7 +24,6 @@ public class Trace {
 
 	public Trace(ArrayList<String> events) {
 		this.events = events;
-
 	}
 
 	public String getFileName() {
