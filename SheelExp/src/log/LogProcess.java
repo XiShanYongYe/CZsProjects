@@ -13,8 +13,8 @@ import structure.EventFlow;
  */
 public class LogProcess {
 
-	private static String dir = "C:\\Users\\Administrator\\Desktop\\Second\\无选择有循环\\";
-	private static String firstFile = "1In_bb6y_redundent_ed6.xes";
+	private static String dir = "F:/常震/CZ/";
+	private static String firstFile = "test.xes";
 
 	public static void main(String[] args) {
 
@@ -23,8 +23,9 @@ public class LogProcess {
 
 		List<EventFlow> allTrace = ReadLog.getTraces(file);
 
-		System.out.println("size:" + allTrace.size());
+		int count = 0;
 		for (EventFlow eFlow : allTrace)
+			// System.out.println("第" + (count++) + "个：" + eFlow);
 			System.out.println(eFlow);
 
 	}

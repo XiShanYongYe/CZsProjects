@@ -16,7 +16,7 @@ import structure.EventFlow;
  */
 public class ProduceMiss {
 
-	private static String dir = "C:\\Users\\Administrator\\Desktop\\Second\\无选择有循环\\";
+	private static String dir = "F:/常震/CZ/Second/无选择有循环/";
 	private static String firstFile = "1In_bb6y.xes";
 
 	public static void main(String[] args) {

@@ -16,8 +16,8 @@ import structure.EventFlow;
  */
 public class ProduceSwitch {
 
-	private static String dir = "C:\\Users\\Administrator\\Desktop\\日志修复实验\\3\\";
-	private static String firstFile = "1Ku_a1xs.xes";
+	private static String dir = "F:/常震/CZ/Second/无选择有循环/";
+	private static String firstFile = "1In_bb6y.xes";
 
 	public static void main(String[] args) {
 
@@ -25,7 +25,7 @@ public class ProduceSwitch {
 		File file = new File(dir + "\\" + firstFile);
 		List<EventFlow> allTrace = ReadLog.getTraces(file);
 
-		int distance = 6;// 设置编辑距离
+		int distance = 1;// 设置编辑距离
 
 		produce(allTrace, distance);
 

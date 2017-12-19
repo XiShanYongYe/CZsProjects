@@ -14,8 +14,8 @@ import structure.EventFlow;
  */
 public class ProduceMix {
 
-	private static String dir = "C:\\Users\\Administrator\\Desktop\\日志修复实验\\3\\";
-	private static String firstFile = "1Ku_a1xs.xes";
+	private static String dir = "F:/常震/CZ/Second/无选择有循环/";
+	private static String firstFile = "1In_bb6y.xes";
 
 	public static void main(String[] args) {
 
@@ -23,7 +23,7 @@ public class ProduceMix {
 		File file = new File(dir + "\\" + firstFile);
 		List<EventFlow> allTrace = ReadLog.getTraces(file);
 
-		int distance = 6;// 设置编辑距离
+		int distance = 4;// 设置编辑距离
 
 		produce(allTrace, distance);
 
@@ -45,10 +45,8 @@ public class ProduceMix {
 		int num_miss = random.nextInt(distance + 1);
 		int num_switch = random.nextInt(distance + 1 - num_miss);
 		int num_redundent = distance - num_miss - num_switch;
-		// System.out.println(num_miss + " " + num_switch + " " + num_redundent
-		// + " " + (num_miss + num_switch + num_redundent));
 		ProduceMiss.misshEvent(eventFlow, num_miss);
-		ProduceSwitch.swichEvent(eventFlow, num_switch);
+		// ProduceSwitch.swichEvent(eventFlow, num_switch);
 		ProduceRedundent.redundentEvent(eventFlow, num_redundent);
 
 	}

@@ -26,8 +26,8 @@ public class CovertTrace2Log {
 
 	private static List<EventFlow> traceList = new ArrayList<EventFlow>();
 
-	private static String sourceFile = "C:\\Users\\Administrator\\Desktop\\Second\\无选择有循环\\";
-	private static String fileName = "1In_bb6y_redundent_ed3";
+	private static String sourceFile = "F:/常震/CZ/Second/无选择有循环/";
+	private static String fileName = "1In_bb6yPer90";
 	private static String dirFile = sourceFile + fileName + ".xes";
 
 	public static void main(String[] args) {
@@ -41,7 +41,8 @@ public class CovertTrace2Log {
 	 */
 	public static void readFileByLines(String fileName) {
 
-		File file = new File(fileName);
+		File file = null;
+		file = new File(fileName);
 		BufferedReader reader = null;
 
 		try {
@@ -63,6 +64,8 @@ public class CovertTrace2Log {
 
 			}
 
+			File desFile = new File(dirFile);
+			WriteToXes(traceList, desFile);
 			reader.close();
 
 		} catch (IOException e) {
@@ -76,10 +79,6 @@ public class CovertTrace2Log {
 				}
 			}
 		}
-
-		File desFile = new File(dirFile);
-		WriteToXes(traceList, desFile);
-
 	}
 
 	public static void WriteToXes(List<EventFlow> traceList, File desFile) {
@@ -116,8 +115,7 @@ public class CovertTrace2Log {
 		OutputFormat outputFormat = OutputFormat.createPrettyPrint();
 		XMLWriter xmlWriter = null;
 		try {
-			xmlWriter = new XMLWriter(new FileOutputStream(desFile),
-					outputFormat);
+			xmlWriter = new XMLWriter(new FileOutputStream(desFile), outputFormat);
 			xmlWriter.write(document);
 		} catch (Exception e) {
 			e.printStackTrace();
